@@ -70,7 +70,10 @@ export default function Layout() {
         <div className="wrap bar">
           <Link to="/" className="logo">
             <img src="/brand/mark.png" alt="" />
-            <span>{SHOP.name}</span>
+            <span className="logo-name">
+              <span>Anguah Flow</span>
+              <span>Enterprise</span>
+            </span>
           </Link>
           <nav>
             <a href="/#japan-cars">Cars</a>

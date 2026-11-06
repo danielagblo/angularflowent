@@ -40,9 +40,9 @@ img { max-width: 100%; }
   display: flex;
   align-items: center;
   gap: 0.75rem 1rem;
-  min-height: 68px;
+  min-height: 84px;
   flex-wrap: wrap;
-  padding: 0.4rem 0;
+  padding: 0.55rem 0;
 }
 
 header {
@@ -70,9 +70,28 @@ header::after {
   text-decoration: none;
 }
 
-.logo img { height: 46px; width: auto; }
+.logo img { height: 72px; width: auto; }
 
-.logo span { max-width: 9.2rem; font-size: 0.95rem; font-weight: 700; }
+.logo-name {
+  display: flex;
+  flex-direction: column;
+  gap: 0.12rem;
+  max-width: none;
+  line-height: 1;
+}
+
+.logo-name span:first-child {
+  font-size: 1.45rem;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+}
+
+.logo-name span:last-child {
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+}
 
 nav { display: flex; align-items: center; gap: 0.75rem 1rem; margin-left: auto; flex-wrap: wrap; min-width: 0; }
 
@@ -87,7 +106,9 @@ nav { display: flex; align-items: center; gap: 0.75rem 1rem; margin-left: auto; 
   .ceo-row { align-items: flex-start; flex-wrap: wrap; }
   .ceo-row > .btn { margin-left: 0; }
   .logo { min-width: 0; }
-  .logo span { display: block; max-width: none; font-size: 0.92rem; }
+  .logo img { height: 64px; }
+  .logo-name span:first-child { font-size: 1.28rem; }
+  .logo-name span:last-child { font-size: 0.7rem; letter-spacing: 0.16em; }
 }
 
 nav a { color: rgba(255, 255, 255, 0.86); text-decoration: none; }
