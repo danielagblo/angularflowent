@@ -56,7 +56,7 @@ export default function Request() {
     setPreview(URL.createObjectURL(file));
   }
 
-  function onSubmit(event) {
+  async function onSubmit(event) {
     event.preventDefault();
     const form = event.currentTarget;
     const data = new FormData(form);
@@ -83,24 +83,31 @@ export default function Request() {
     }
     setError("");
 
-    const text = carMessage({
-      name,
-      phone,
-      year,
-      make,
-      model,
-      budget,
-      currency,
-      notes,
-      hasPhoto: Boolean(file),
-    });
-    const href = whatsapp(`Hello ${SHOP.owner},\n\n${text}`);
+    const details = { name, phone, year, make, model, budget, currency, notes };
+    const caption = `Hello ${SHOP.owner},\n\n${carMessage({ ...details, hasPhoto: false })}`;
+
+    if (file && navigator.canShare) {
+      const withText = { files: [file], text: caption };
+      const photoOnly = { files: [file] };
+      const payload = navigator.canShare(withText) ? withText : navigator.canShare(photoOnly) ? photoOnly : null;
+      if (payload) {
+        try {
+          await navigator.share(payload);
+          setNotice(`The photo is attached. Send it to ${SHOP.owner} on WhatsApp, ${SHOP.phoneDisplay}.`);
+          return;
+        } catch (err) {
+          if (err?.name === "AbortError") return;
+        }
+      }
+    }
+
+    const href = whatsapp(file ? `Hello ${SHOP.owner},\n\n${carMessage({ ...details, hasPhoto: true })}` : caption);
     const opened = window.open(href, "_blank");
     if (opened) opened.opener = null;
     else window.location.assign(href);
     setNotice(
       file
-        ? `Your details are in ${SHOP.owner}'s WhatsApp. Add the photo in that chat.`
+        ? `The written details are in ${SHOP.owner}'s WhatsApp. This browser cannot attach the photo, so add it in that chat.`
         : `Your details are in ${SHOP.owner}'s WhatsApp.`,
     );
   }
