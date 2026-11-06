@@ -61,7 +61,7 @@ export default function Contact() {
             WhatsApp
           </a>
         </div>
-        <form className="sheet" onSubmit={onSubmit}>
+        <form className="sheet contact-form" onSubmit={onSubmit}>
           {sent ? (
             <p>Thanks. This note stays in your browser. Call or WhatsApp us if you need a reply today.</p>
           ) : (
@@ -79,7 +79,7 @@ export default function Contact() {
                 <textarea name="message" rows={4} />
               </label>
               {error && <p className="err">{error}</p>}
-              <button className="btn" type="submit">
+              <button className="btn wide" type="submit">
                 Send
               </button>
             </>

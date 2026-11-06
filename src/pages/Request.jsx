@@ -4,7 +4,7 @@ import { useShop } from "../context/ShopState";
 import { SHOP, whatsapp } from "../lib/shop";
 import { useTitle } from "../lib/useTitle";
 
-function carMessage({ name, phone, year, make, model, budget, currency, link, notes, hasPhoto }) {
+function carMessage({ name, phone, year, make, model, budget, currency, notes, hasPhoto }) {
   const lines = [
     `Car request for ${SHOP.owner}, ${SHOP.name}`,
     "",
@@ -13,9 +13,8 @@ function carMessage({ name, phone, year, make, model, budget, currency, link, no
     `Car: ${[year, make, model].filter(Boolean).join(" ")}`,
   ];
   if (budget) lines.push(`Budget: ${budget} ${currency}`);
-  if (link) lines.push(`Listing: ${link}`);
   if (notes) lines.push(`Notes: ${notes}`);
-  if (hasPhoto) lines.push("A photo of the car is included with this message.");
+  if (hasPhoto) lines.push("I have a photo of the car and will send it in this chat.");
   return lines.join("\n");
 }
 
@@ -57,7 +56,7 @@ export default function Request() {
     setPreview(URL.createObjectURL(file));
   }
 
-  async function onSubmit(event) {
+  function onSubmit(event) {
     event.preventDefault();
     const form = event.currentTarget;
     const data = new FormData(form);
@@ -67,7 +66,6 @@ export default function Request() {
     const make = String(data.get("make") || "").trim();
     const model = String(data.get("model") || "").trim();
     const budget = String(data.get("budget") || "").trim();
-    const link = String(data.get("link") || "").trim();
     const notes = String(data.get("notes") || "").trim();
     const file = form.photo.files?.[0] || null;
 
@@ -93,27 +91,17 @@ export default function Request() {
       model,
       budget,
       currency,
-      link,
       notes,
       hasPhoto: Boolean(file),
     });
-
-    if (file && navigator.canShare && navigator.canShare({ files: [file] })) {
-      try {
-        await navigator.share({ title: `${year} ${make} ${model}`.trim(), text, files: [file] });
-        setNotice("The photo and the car details are ready. Send that message to the shop.");
-        return;
-      } catch (err) {
-        if (err?.name === "AbortError") return;
-      }
-    }
-
-    const opened = window.open(whatsapp(text), "_blank", "noopener,noreferrer");
-    if (!opened) window.location.href = whatsapp(text);
+    const href = whatsapp(`Hello ${SHOP.owner},\n\n${text}`);
+    const opened = window.open(href, "_blank");
+    if (opened) opened.opener = null;
+    else window.location.assign(href);
     setNotice(
       file
-        ? "The car details are ready. Attach the same photo in the chat — a link cannot carry the picture on this device."
-        : "Your car details are ready for the shop.",
+        ? `Your details are in ${SHOP.owner}'s WhatsApp. Add the photo in that chat.`
+        : `Your details are in ${SHOP.owner}'s WhatsApp.`,
     );
   }
 
@@ -153,10 +141,6 @@ export default function Request() {
           <label>
             Budget in {currency}
             <input name="budget" inputMode="decimal" placeholder="Optional" defaultValue={params.get("budget") || ""} />
-          </label>
-          <label>
-            Link to the car
-            <input name="link" type="url" placeholder="https://" />
           </label>
           <label>
             Notes

@@ -1189,6 +1189,15 @@ header .btn:hover { background: #e8eef6; }
   margin-top: 1.15rem;
 }
 
+.contact-form label { margin-top: 0.85rem; }
+
+.contact-form label:first-of-type { margin-top: 0; }
+
+.contact-form .btn {
+  margin-top: 1.15rem;
+  border-radius: 10px;
+}
+
 .page.tight { padding-top: 0; }
 
 .section-head { display: flex; justify-content: space-between; align-items: baseline; gap: 1rem; }
