@@ -1149,6 +1149,24 @@ header .btn:hover { background: #e8eef6; }
 
 .page { padding: 1.6rem 0 2.6rem; }
 
+.request-page { padding-bottom: 6.5rem; }
+
+.request-layout {
+  display: grid;
+  gap: 1.15rem;
+  width: min(680px, calc(100% - 2rem));
+}
+
+.request-layout .lede { margin-bottom: 0; }
+
+.request-layout .sheet label { margin-top: 0.85rem; }
+
+.request-layout .sheet label:first-of-type { margin-top: 0; }
+
+.request-layout .sheet .btn {
+  margin-top: 1.15rem;
+}
+
 .page.tight { padding-top: 0; }
 
 .section-head { display: flex; justify-content: space-between; align-items: baseline; gap: 1rem; }

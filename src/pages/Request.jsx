@@ -48,7 +48,7 @@ export default function Request() {
       return;
     }
     if (file.size > 12 * 1024 * 1024) {
-      setError("Use a photo under 12 MB so WhatsApp can send it.");
+      setError("Use a photo under 12 MB.");
       event.target.value = "";
       setPreview("");
       return;
@@ -101,7 +101,7 @@ export default function Request() {
     if (file && navigator.canShare && navigator.canShare({ files: [file] })) {
       try {
         await navigator.share({ title: `${year} ${make} ${model}`.trim(), text, files: [file] });
-        setNotice("WhatsApp has the photo and the car details. Send that message to the shop.");
+        setNotice("The photo and the car details are ready. Send that message to the shop.");
         return;
       } catch (err) {
         if (err?.name === "AbortError") return;
@@ -112,18 +112,19 @@ export default function Request() {
     if (!opened) window.location.href = whatsapp(text);
     setNotice(
       file
-        ? "WhatsApp is open with the car details. Attach the same photo in that chat — a link cannot carry the picture on this device."
-        : "WhatsApp is open with your car details for the shop.",
+        ? "The car details are ready. Attach the same photo in the chat — a link cannot carry the picture on this device."
+        : "Your car details are ready for the shop.",
     );
   }
 
   return (
-    <section className="page">
-      <div className="wrap split">
+    <section className="page request-page">
+      <div className="wrap request-layout">
         <div>
+          <p className="eyebrow">Request</p>
           <h1>Request a car</h1>
-          <p className="muted">
-            Send the Japanese car you want. The details go to {SHOP.owner} at {SHOP.name} on WhatsApp. On a phone, the photo can go with them.
+          <p className="lede">
+            Name the Japanese car you want. The details go to {SHOP.owner} at {SHOP.name}. On a phone, the photo can go with them.
           </p>
         </div>
         <form className="sheet" onSubmit={onSubmit}>
@@ -168,8 +169,8 @@ export default function Request() {
           {preview && <img className="preview" src={preview} alt="The car you want to send" />}
           {error && <p className="err">{error}</p>}
           {notice && <p className="fine">{notice}</p>}
-          <button className="btn" type="submit">
-            Send on WhatsApp
+          <button className="btn wide" type="submit">
+            Send request
           </button>
         </form>
       </div>
