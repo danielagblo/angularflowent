@@ -1,0 +1,178 @@
+import { useEffect, useState } from "react";
+import { useSearchParams } from "react-router-dom";
+import { useShop } from "../context/ShopState";
+import { SHOP, whatsapp } from "../lib/shop";
+import { useTitle } from "../lib/useTitle";
+
+function carMessage({ name, phone, year, make, model, budget, currency, link, notes, hasPhoto }) {
+  const lines = [
+    `Car request for ${SHOP.owner}, ${SHOP.name}`,
+    "",
+    `Name: ${name}`,
+    `Phone: ${phone}`,
+    `Car: ${[year, make, model].filter(Boolean).join(" ")}`,
+  ];
+  if (budget) lines.push(`Budget: ${budget} ${currency}`);
+  if (link) lines.push(`Listing: ${link}`);
+  if (notes) lines.push(`Notes: ${notes}`);
+  if (hasPhoto) lines.push("A photo of the car is included with this message.");
+  return lines.join("\n");
+}
+
+export default function Request() {
+  useTitle("Request a car");
+  const [params] = useSearchParams();
+  const { currency } = useShop();
+  const [error, setError] = useState("");
+  const [notice, setNotice] = useState("");
+  const [preview, setPreview] = useState("");
+
+  useEffect(() => {
+    return () => {
+      if (preview) URL.revokeObjectURL(preview);
+    };
+  }, [preview]);
+
+  function onPhoto(event) {
+    const file = event.target.files?.[0];
+    setNotice("");
+    if (preview) URL.revokeObjectURL(preview);
+    if (!file) {
+      setPreview("");
+      return;
+    }
+    if (!file.type.startsWith("image/")) {
+      setError("Choose a photo, not another kind of file.");
+      event.target.value = "";
+      setPreview("");
+      return;
+    }
+    if (file.size > 12 * 1024 * 1024) {
+      setError("Use a photo under 12 MB so WhatsApp can send it.");
+      event.target.value = "";
+      setPreview("");
+      return;
+    }
+    setError("");
+    setPreview(URL.createObjectURL(file));
+  }
+
+  async function onSubmit(event) {
+    event.preventDefault();
+    const form = event.currentTarget;
+    const data = new FormData(form);
+    const name = String(data.get("name") || "").trim();
+    const phone = String(data.get("phone") || "").trim();
+    const year = String(data.get("year") || "").trim();
+    const make = String(data.get("make") || "").trim();
+    const model = String(data.get("model") || "").trim();
+    const budget = String(data.get("budget") || "").trim();
+    const link = String(data.get("link") || "").trim();
+    const notes = String(data.get("notes") || "").trim();
+    const file = form.photo.files?.[0] || null;
+
+    if (name.length < 2) {
+      setError("Add your name.");
+      return;
+    }
+    if (phone.replace(/\D/g, "").length < 9) {
+      setError("Add a phone number we can reach.");
+      return;
+    }
+    if (make.length < 2 || model.length < 1) {
+      setError("Add the make and model you want.");
+      return;
+    }
+    setError("");
+
+    const text = carMessage({
+      name,
+      phone,
+      year,
+      make,
+      model,
+      budget,
+      currency,
+      link,
+      notes,
+      hasPhoto: Boolean(file),
+    });
+
+    if (file && navigator.canShare && navigator.canShare({ files: [file] })) {
+      try {
+        await navigator.share({ title: `${year} ${make} ${model}`.trim(), text, files: [file] });
+        setNotice("WhatsApp has the photo and the car details. Send that message to the shop.");
+        return;
+      } catch (err) {
+        if (err?.name === "AbortError") return;
+      }
+    }
+
+    const opened = window.open(whatsapp(text), "_blank", "noopener,noreferrer");
+    if (!opened) window.location.href = whatsapp(text);
+    setNotice(
+      file
+        ? "WhatsApp is open with the car details. Attach the same photo in that chat — a link cannot carry the picture on this device."
+        : "WhatsApp is open with your car details for the shop.",
+    );
+  }
+
+  return (
+    <section className="page">
+      <div className="wrap split">
+        <div>
+          <h1>Request a car</h1>
+          <p className="muted">
+            Send the Japanese car you want. The details go to {SHOP.owner} at {SHOP.name} on WhatsApp. On a phone, the photo can go with them.
+          </p>
+        </div>
+        <form className="sheet" onSubmit={onSubmit}>
+          <label>
+            Your name
+            <input name="name" autoComplete="name" />
+          </label>
+          <label>
+            Your phone
+            <input name="phone" autoComplete="tel" inputMode="tel" />
+          </label>
+          <div className="form-grid">
+            <label>
+              Year
+              <input name="year" inputMode="numeric" placeholder="2019" defaultValue={params.get("year") || ""} />
+            </label>
+            <label>
+              Make
+              <input name="make" placeholder="Toyota" defaultValue={params.get("make") || ""} />
+            </label>
+            <label>
+              Model
+              <input name="model" placeholder="Voxy" defaultValue={params.get("model") || ""} />
+            </label>
+          </div>
+          <label>
+            Budget in {currency}
+            <input name="budget" inputMode="decimal" placeholder="Optional" defaultValue={params.get("budget") || ""} />
+          </label>
+          <label>
+            Link to the car
+            <input name="link" type="url" placeholder="https://" />
+          </label>
+          <label>
+            Notes
+            <textarea name="notes" rows={3} placeholder="Colour, or where you saw it" defaultValue={params.get("body") ? `Body: ${params.get("body")}` : ""} />
+          </label>
+          <label>
+            Photo
+            <input name="photo" type="file" accept="image/*" onChange={onPhoto} />
+          </label>
+          {preview && <img className="preview" src={preview} alt="The car you want to send" />}
+          {error && <p className="err">{error}</p>}
+          {notice && <p className="fine">{notice}</p>}
+          <button className="btn" type="submit">
+            Send on WhatsApp
+          </button>
+        </form>
+      </div>
+    </section>
+  );
+}
