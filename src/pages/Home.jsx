@@ -118,14 +118,38 @@ function PortHero() {
       if (PORTS[index]?.type !== "video") return;
       if (document.fullscreenElement || document.webkitFullscreenElement) return;
       const visible = entry.isIntersecting && entry.intersectionRatio >= 0.45;
-      if (visible) {
+      if (visible && !document.hidden && document.hasFocus()) {
         if (!video.ended) video.play().catch(() => {});
         return;
       }
       video.pause();
     }, { threshold: [0, 0.45, 0.75] });
     observer.observe(hero);
-    return () => observer.disconnect();
+    function onAway() {
+      if (PORTS[index]?.type !== "video") return;
+      video.pause();
+    }
+    function onBack() {
+      if (PORTS[index]?.type !== "video" || document.hidden || !document.hasFocus() || video.ended) return;
+      const rect = hero.getBoundingClientRect();
+      const height = rect.height || 1;
+      const shown = Math.min(rect.bottom, window.innerHeight) - Math.max(rect.top, 0);
+      const full = document.fullscreenElement || document.webkitFullscreenElement;
+      if (full || shown / height >= 0.45) video.play().catch(() => {});
+    }
+    function onVisibility() {
+      if (document.hidden) onAway();
+      else onBack();
+    }
+    document.addEventListener("visibilitychange", onVisibility);
+    window.addEventListener("blur", onAway);
+    window.addEventListener("focus", onBack);
+    return () => {
+      observer.disconnect();
+      document.removeEventListener("visibilitychange", onVisibility);
+      window.removeEventListener("blur", onAway);
+      window.removeEventListener("focus", onBack);
+    };
   }, [index]);
 
   useEffect(() => {
