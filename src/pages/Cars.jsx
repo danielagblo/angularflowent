@@ -17,7 +17,7 @@ export default function Cars() {
       <div className="wrap">
         <h1>{savedOnly ? "Saved cars" : "Cars"}</h1>
         <p className="muted intro">
-          Six models ordered from Japan. {SHOP.owner} confirms the car and the price before you pay.
+          Six models ordered from Japan. {SHOP.name} confirms the car and the price before you pay.
         </p>
         {cars.length === 0 ? (
           <p>

@@ -6,7 +6,7 @@ import { useTitle } from "../lib/useTitle";
 
 function carMessage({ name, phone, year, make, model, budget, currency, notes, hasPhoto }) {
   const lines = [
-    `Car request for ${SHOP.owner}, ${SHOP.name}`,
+    `Car request for ${SHOP.name}`,
     "",
     `Name: ${name}`,
     `Phone: ${phone}`,
@@ -84,7 +84,7 @@ export default function Request() {
     setError("");
 
     const details = { name, phone, year, make, model, budget, currency, notes };
-    const caption = `Hello ${SHOP.owner},\n\n${carMessage({ ...details, hasPhoto: false })}`;
+    const caption = `Hello ${SHOP.name},\n\n${carMessage({ ...details, hasPhoto: false })}`;
 
     if (file && navigator.canShare) {
       const withText = { files: [file], text: caption };
@@ -93,7 +93,7 @@ export default function Request() {
       if (payload) {
         try {
           await navigator.share(payload);
-          setNotice(`The photo is attached. Send it to ${SHOP.owner} on WhatsApp, ${SHOP.phoneDisplay}.`);
+          setNotice(`The photo is attached. Send it to ${SHOP.name} on WhatsApp, ${SHOP.phoneDisplay}.`);
           return;
         } catch (err) {
           if (err?.name === "AbortError") return;
@@ -101,14 +101,14 @@ export default function Request() {
       }
     }
 
-    const href = whatsapp(file ? `Hello ${SHOP.owner},\n\n${carMessage({ ...details, hasPhoto: true })}` : caption);
+    const href = whatsapp(file ? `Hello ${SHOP.name},\n\n${carMessage({ ...details, hasPhoto: true })}` : caption);
     const opened = window.open(href, "_blank");
     if (opened) opened.opener = null;
     else window.location.assign(href);
     setNotice(
       file
-        ? `The written details are in ${SHOP.owner}'s WhatsApp. This browser cannot attach the photo, so add it in that chat.`
-        : `Your details are in ${SHOP.owner}'s WhatsApp.`,
+        ? `The written details are in the company WhatsApp. This browser cannot attach the photo, so add it in that chat.`
+        : `Your details are in the company WhatsApp.`,
     );
   }
 
@@ -119,7 +119,7 @@ export default function Request() {
           <p className="eyebrow">Request</p>
           <h1>Request a car</h1>
           <p className="lede">
-            Name the Japanese car you want. The details go to {SHOP.owner} at {SHOP.name}. On a phone, the photo can go with them.
+            Name the Japanese car you want. The details go to {SHOP.name}. On a phone, the photo can go with them.
           </p>
         </div>
         <form className="sheet" onSubmit={onSubmit}>

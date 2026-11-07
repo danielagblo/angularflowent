@@ -7,7 +7,7 @@ export default defineConfig({
     port: 5173,
     strictPort: true,
     watch: {
-      ignored: ["**/public/cars/**", "**/public/tema-port.jpg", "**/public/port/**", "**/public/brand/steven.jpg", "**/.shots/**"],
+      ignored: ["**/public/cars/**", "**/public/tema-port.jpg", "**/public/port/**", "**/public/brand/steven.jpg", "**/public/work/cover.mp4", "**/.shots/**"],
       // Port photos are ignored so a locked file does not stop the server.
     },
   },

@@ -401,7 +401,8 @@ header .btn:hover { background: #e8eef6; }
   background: #0c2340;
 }
 
-.port-hero img {
+.port-hero img,
+.port-hero video {
   position: absolute;
   left: 0;
   top: -12%;
@@ -414,10 +415,65 @@ header .btn:hover { background: #e8eef6; }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .port-hero img { top: 0; height: 100%; transform: none !important; }
+  .port-hero img,
+  .port-hero video { top: 0; height: 100%; transform: none !important; }
 }
 
-.port-hero img.on { opacity: 1; }
+.port-hero img.on,
+.port-hero video.on { opacity: 1; }
+
+.cover-video {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.cover-video.on {
+  opacity: 1;
+  pointer-events: auto;
+  cursor: pointer;
+}
+
+.cover-video video { opacity: 1; }
+
+.cover-video:fullscreen,
+.cover-video:-webkit-full-screen {
+  background: #000;
+  cursor: default;
+}
+
+.cover-video:fullscreen video,
+.cover-video:-webkit-full-screen video {
+  top: 0;
+  height: 100%;
+  object-fit: contain;
+  transform: none !important;
+}
+
+.cover-tools {
+  position: absolute;
+  right: 0.8rem;
+  bottom: 2.5rem;
+  z-index: 3;
+  display: flex;
+  gap: 0.4rem;
+}
+
+.cover-tools button {
+  min-height: 36px;
+  padding: 0 0.8rem;
+  border: 0;
+  border-radius: 999px;
+  background: rgba(8, 24, 44, 0.8);
+  color: #fff;
+  font: inherit;
+  font-size: 0.82rem;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.cover-tools button:hover { background: rgba(8, 24, 44, 0.95); }
 
 .port-nav {
   position: absolute;

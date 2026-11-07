@@ -6,7 +6,7 @@ import { SHOP, whatsapp } from "../lib/shop";
 function WaAgent() {
   const [open, setOpen] = useState(false);
   const [typed, setTyped] = useState(false);
-  const href = whatsapp(`Hello ${SHOP.owner}, I want to ask about a car.`);
+  const href = whatsapp(`Hello ${SHOP.name}, I want to ask about a car.`);
 
   useEffect(() => {
     const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
@@ -21,12 +21,12 @@ function WaAgent() {
   return (
     <div className={`wa-agent${open ? " open" : ""}`}>
       {open && (
-        <div className="wa-card" role="dialog" aria-label={`Message from ${SHOP.owner}`}>
+        <div className="wa-card" role="dialog" aria-label={`Message from ${SHOP.name}`}>
           <div className="wa-card-head">
             <img src="/brand/steven.jpg" alt="" />
             <div>
-              <strong>{SHOP.owner}</strong>
-              <span>Consultant</span>
+              <strong>{SHOP.name}</strong>
+              <span>{SHOP.role}</span>
             </div>
             <button type="button" className="wa-close" aria-label="Close message" onClick={() => setOpen(false)}>
               ×
@@ -34,7 +34,7 @@ function WaAgent() {
           </div>
           <div className="wa-card-body">
             {typed ? (
-              <p>Hello. Tell me the car you want from Japan, and I will confirm it before you pay.</p>
+              <p>Hello. Tell us the car you want from Japan, and the company will confirm it before you pay.</p>
             ) : (
               <p className="wa-typing" aria-label="Typing">
                 <span />
@@ -96,7 +96,7 @@ export default function Layout() {
             <ul className="foot-lines">
               <li>
                 <Icon name="user" />
-                <span>{SHOP.owner}, {SHOP.role.toLowerCase()}</span>
+                <span>The {SHOP.role.toLowerCase()}</span>
               </li>
               <li>
                 <Icon name="pin" />
@@ -109,7 +109,7 @@ export default function Layout() {
             </ul>
           </div>
           <p className="fine">
-            Japan orders are confirmed with the consultant before you pay. The price of a car is agreed then, not taken from a list.
+            Japan orders are confirmed with the company before you pay. The price of a car is agreed then, not taken from a list.
           </p>
         </div>
       </footer>

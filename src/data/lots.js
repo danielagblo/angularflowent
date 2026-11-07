@@ -1,5 +1,26 @@
 export const CARS = [
   {
+    id: "landcruiser",
+    make: "Toyota",
+    model: "Land Cruiser",
+    photo: "/work/landcruiser.jpg",
+    blurb: "A large Toyota wagon. It can be pre-ordered from Japan.",
+  },
+  {
+    id: "corolla",
+    make: "Toyota",
+    model: "Corolla",
+    photo: "/work/corolla.jpg",
+    blurb: "A Toyota sedan, ordered from Japan.",
+  },
+  {
+    id: "prado",
+    make: "Toyota",
+    model: "Prado",
+    photo: "/work/prado.jpg",
+    blurb: "A Toyota wagon. It can be pre-ordered from Japan.",
+  },
+  {
     id: "vitz",
     make: "Toyota",
     model: "Vitz",

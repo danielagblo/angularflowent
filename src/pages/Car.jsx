@@ -18,7 +18,7 @@ export default function Car() {
   if (!lot) return <NotFound />;
 
   const saved = isSaved(lot.id);
-  const message = `Hello ${SHOP.owner}, I would like to order a ${name} from Japan.`;
+  const message = `Hello ${SHOP.name}, I would like to order a ${name} from Japan.`;
 
   async function onShare() {
     const url = window.location.href;
@@ -50,7 +50,7 @@ export default function Car() {
               <img className="hero-photo" src={lot.photo} alt={name} onError={() => setFailed(true)} />
             )}
             <p>
-              {SHOP.owner} confirms the car and the price before you pay. The start is 40%, and the rest is paid at the garage in Tema. If the car arrives as right-hand drive, the garage can move the steering.
+              {SHOP.name} confirms the car and the price before you pay. The start is 40%, and the rest is paid at the garage in Tema. If the car arrives as right-hand drive, the garage can move the steering.
             </p>
           </div>
           <aside className="sheet">
