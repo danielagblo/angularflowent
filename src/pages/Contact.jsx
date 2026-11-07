@@ -37,7 +37,7 @@ export default function Contact() {
         <div>
           <h1>Contact</h1>
           <p>
-            {SHOP.name}. The {SHOP.role.toLowerCase()} is on the desk in Tema.
+            {SHOP.owner} is the {SHOP.role.toLowerCase()} at {SHOP.name}.
           </p>
           <ul className="fact-list">
             <li>
@@ -56,7 +56,7 @@ export default function Contact() {
           <p>
             <Link to="/request">Request a car from Japan</Link>
           </p>
-          <a className="btn" href={whatsapp(`Hello ${SHOP.name}, I want to ask about a car.`)}>
+          <a className="btn" href={whatsapp(`Hello ${SHOP.owner}, I want to ask about a car.`)}>
             <Icon name="chat" />
             WhatsApp
           </a>

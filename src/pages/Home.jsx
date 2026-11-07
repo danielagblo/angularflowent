@@ -20,12 +20,12 @@ const SERVICES = [
   {
     icon: "car",
     title: "The car is chosen in Japan",
-    text: "Toyota, Nissan, Honda, Mazda, and Suzuki. A Toyota Voxy or a Toyota Vitz can be named in advance. The company selects the car and arranges the purchase, then confirms it with you before any money is paid.",
+    text: "Toyota, Nissan, Honda, Mazda, and Suzuki. A Toyota Voxy or a Toyota Vitz can be named in advance. Steven Offei selects the car and arranges the purchase, then confirms it with you before any money is paid.",
   },
   {
     icon: "ship",
     title: "Tema gets the car, and you can see it first",
-    text: "Forty percent starts the order. The other sixty percent is paid at the garage when the car arrives. Visit before that balance. The handover happens in Tema.",
+    text: "Forty percent starts the order. The other sixty percent is paid at the garage when the car arrives. Visit before that balance. The handover happens in Tema, with Steven.",
   },
   {
     icon: "wrench",
@@ -40,7 +40,7 @@ const PLACEHOLDERS = [
   { name: "Samuel Koomson", rating: 4, text: "The steering, controls, and dashboard were moved to the left. The car was ready when I visited." },
   { name: "Jasmine Dolon", rating: 5, text: "I named a Vitz. It was arranged in Japan and I collected it at the garage in Tema." },
   { name: "Emmanuel Baiden", rating: 4, text: "Shipping was explained before I paid. The car arrived, and I saw it before the balance." },
-  { name: "Ben Asinu", rating: 5, text: "The workshop moved the steering to the left and fitted the interior. I dealt with the company directly." },
+  { name: "Ben Asinu", rating: 5, text: "The workshop moved the steering to the left and fitted the interior. I dealt with Steven directly." },
 ];
 
 function Stars({ count }) {
@@ -265,7 +265,7 @@ function PortHero() {
 
 export default function Home() {
   useTitle(null);
-  const hello = whatsapp(`Hello ${SHOP.name}, I would like to speak about a car from Japan.`);
+  const hello = whatsapp(`Hello ${SHOP.owner}, I would like to speak about a car from Japan.`);
 
   return (
     <>
@@ -273,9 +273,9 @@ export default function Home() {
         <div className="wrap ceo-row">
           <img className="ceo-photo" src="/brand/steven.jpg" alt={SHOP.owner} />
           <div className="ceo-copy">
-            <p className="eyebrow">Boss</p>
+            <p className="eyebrow">Consultancy</p>
             <h1>{SHOP.owner}</h1>
-            <p>Boss of {SHOP.name}.</p>
+            <p>Founder and consultant at {SHOP.name}. The advice, the Japan purchase, and the Tema handover sit on his desk.</p>
             <ul className="ceo-meta">
               <li>
                 <Icon name="pin" />
@@ -289,7 +289,7 @@ export default function Home() {
           </div>
           <a className="btn" href={hello}>
             <Icon name="chat" />
-            Speak with the boss
+            Speak with {SHOP.owner}
           </a>
         </div>
       </section>
@@ -301,7 +301,7 @@ export default function Home() {
           <p className="eyebrow">Services</p>
           <h2>The consultancy handles the whole job</h2>
           <p className="lede">
-            {SHOP.name} buys the car in Japan, brings it to Tema, and, when you need it, turns a right-hand-drive car into a left-hand-drive car.
+            {SHOP.owner} buys the car in Japan, brings it to Tema, and, when you need it, turns a right-hand-drive car into a left-hand-drive car.
           </p>
           <div className="firm-history">
             {SERVICES.map((item, index) => (
@@ -320,7 +320,7 @@ export default function Home() {
           <p className="eyebrow">From Japan</p>
           <h2>Cars we can outsource</h2>
           <p className="lede">
-            {SHOP.name} can arrange these models from Japan. The company confirms the car and the price before you pay.
+            {SHOP.owner} can arrange these models from Japan. He confirms the car and the price before you pay.
           </p>
           <div className="grid three">
             {CARS.map((car) => {
@@ -331,7 +331,7 @@ export default function Home() {
                   <div>
                     <h3>{name}</h3>
                     <p className="muted">{car.blurb}</p>
-                    <a href={whatsapp(`Hello ${SHOP.name}, I would like to outsource a ${name} from Japan.`)}>
+                    <a href={whatsapp(`Hello ${SHOP.owner}, I would like to outsource a ${name} from Japan.`)}>
                       Ask about this car
                     </a>
                   </div>
@@ -345,18 +345,18 @@ export default function Home() {
       <section className="firm-block">
         <div className="wrap firm-split">
           <div>
-            <p className="eyebrow">Company</p>
-            <h2>{SHOP.name}</h2>
+            <p className="eyebrow">Founder</p>
+            <h2>{SHOP.owner}</h2>
           </div>
           <div className="firm-prose">
             <p>
-              {SHOP.name} is the consultancy. The boss works from the garage in Tema.
+              {SHOP.owner} is the founder of {SHOP.name} and the consultant clients deal with. He works from the garage in Tema.
             </p>
             <p>
-              The work is the import itself: choosing the car in Japan, arranging the shipping, and handing the car over in Tema. When a car arrives as right-hand drive, the garage converts the dashboard to left-hand drive.
+              His work is the import itself: choosing the car in Japan, arranging the shipping, and handing the car over in Tema. When a car arrives as right-hand drive, the garage converts the dashboard to left-hand drive under his desk.
             </p>
             <p>
-              Clients reach the company on {SHOP.phoneDisplay}. A car that is not already in discussion can be requested, with a photo, on WhatsApp.
+              Clients reach him directly on {SHOP.phoneDisplay}. A car that is not already in discussion can be requested, with a photo, on WhatsApp.
             </p>
           </div>
         </div>
@@ -386,7 +386,7 @@ export default function Home() {
               <span className="mark"><Icon name="desk" /></span>
               <h3>The desk</h3>
               <p>
-                {SHOP.name} is the consultancy clients deal with. Each order is confirmed with the company before money is paid. The desk is at the garage in Tema.
+                {SHOP.name} is the consultancy clients deal with. Each order is confirmed with {SHOP.owner} before money is paid. The desk is at the garage in Tema.
               </p>
             </article>
             <article className="amber">
@@ -429,9 +429,9 @@ export default function Home() {
       <section className="firm-block alt">
         <div className="wrap firm-close">
           <div>
-            <h2>Speak with the company</h2>
+            <h2>Speak with the founder</h2>
             <p>
-              {SHOP.name}. {SHOP.address}. {SHOP.phoneDisplay}.
+              {SHOP.owner}, {SHOP.address}. {SHOP.phoneDisplay}.
             </p>
           </div>
           <div className="home-links">
